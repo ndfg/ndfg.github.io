@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrackTuner</title>
+<meta name="description" content="TrackTuner トラックチューナー">
+<style>
+  :root { --red:#e3120b; --ink:#111; --sub:#555; --bg:#fff; --line:#e5e5e5; }
+  @media (prefers-color-scheme: dark) { :root { --ink:#f2f2f2; --sub:#aaa; --bg:#111; --line:#333; } }
+  html,body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif; }
+  main { max-width:420px; margin:0 auto; padding:48px 16px; text-align:center; }
+  h1 { font-size:34px; margin:0 0 8px; letter-spacing:.5px; }
+  h1 .t { color:var(--red); }
+  p { color:var(--sub); margin:0 0 32px; }
+  a.btn { display:block; padding:16px; margin:12px 0; border-radius:12px; border:1px solid var(--line); color:var(--ink); text-decoration:none; font-weight:700; font-size:18px; }
+  a.btn.main { background:var(--red); border-color:var(--red); color:#fff; }
+  .soon { display:block; padding:16px; margin:12px 0; border-radius:12px; border:1px dashed var(--line); color:var(--sub); font-size:16px; }
+</style>
+</head>
+<body>
+<main>
+  <h1><span class="t">Track</span>Tuner</h1>
+  <p>トラックチューナー</p>
+  <a class="btn" id="ios" href="#">iPhone（App Store）</a>
+  <span class="soon" id="android">Android（Google Play）準備中</span>
+</main>
+<script>
+  // QR から来た人を、端末に合わせてストアへ送る。リンクの行き先はここだけで変えられる（ステッカーは刷り直さなくてよい）。
+  var q = new URLSearchParams(location.search);
+  var ct = (q.get('ct') || 'sticker').replace(/[^a-z0-9-]/gi, '').slice(0, 40);
+  var IOS = 'https://apps.apple.com/jp/app/apple-store/id6767684904?pt=128881502&mt=8&ct=' + ct;
+  var ANDROID = ''; // Google Play で公開したら 'https://play.google.com/store/apps/details?id=com.ndfg.tracktuner&referrer=utm_source%3D' + ct を入れる
+  document.getElementById('ios').href = IOS;
+  if (ANDROID) {
+    var a = document.getElementById('android');
+    a.outerHTML = '<a class="btn" id="android" href="' + ANDROID + '">Android（Google Play）</a>';
+  }
+  var ua = navigator.userAgent;
+  var isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/.test(ua);
+  if (isIOS) { document.getElementById('ios').classList.add('main'); location.replace(IOS); }
+  else if (isAndroid && ANDROID) { location.replace(ANDROID); }
+</script>
+</body>
+</html>
