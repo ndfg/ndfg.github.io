@@ -6,6 +6,7 @@
 <title>TrackTuner</title>
 <meta name="description" content="TrackTuner トラックチューナー">
 <style>
+  * { box-sizing:border-box; }
   :root { --red:#e3120b; --ink:#111; --sub:#555; --bg:#fff; --line:#e5e5e5; }
   @media (prefers-color-scheme: dark) { :root { --ink:#f2f2f2; --sub:#aaa; --bg:#111; --line:#333; } }
   html,body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif; }
@@ -16,6 +17,14 @@
   a.btn { display:block; padding:16px; margin:12px 0; border-radius:12px; border:1px solid var(--line); color:var(--ink); text-decoration:none; font-weight:700; font-size:18px; }
   a.btn.main { background:var(--red); border-color:var(--red); color:#fff; }
   .soon { display:block; padding:16px; margin:12px 0; border-radius:12px; border:1px dashed var(--line); color:var(--sub); font-size:16px; }
+  .and { text-align:left; margin-top:28px; padding:16px; border:1px solid var(--line); border-radius:12px; }
+  .and h2 { font-size:18px; margin:0 0 6px; }
+  .and .note { font-size:14px; margin:0 0 12px; }
+  .and ol { margin:0; padding-left:0; list-style:none; }
+  .and li { margin:0 0 14px; }
+  .and li b { display:block; font-size:15px; margin-bottom:6px; }
+  .and a.btn { margin:0; font-size:16px; text-align:center; }
+  .and.main { border-color:var(--red); }
 </style>
 </head>
 <body>
@@ -23,14 +32,24 @@
   <h1><span class="t">Track</span>Tuner</h1>
   <p>トラックチューナー</p>
   <a class="btn" id="ios" href="#">iPhone（App Store）</a>
-  <span class="soon" id="android">Android（Google Play）準備中</span>
+  <section class="and" id="android">
+    <h2>Android（テスト版・無料）</h2>
+    <p class="note">上から順に3つ押してください。Google のアカウントで入ります。</p>
+    <ol>
+      <li><b>1. テスターのグループに参加</b><a class="btn" href="https://groups.google.com/g/tracktuner-android-testers">グループに参加する</a></li>
+      <li><b>2. テストに参加</b><a class="btn" href="https://play.google.com/apps/testing/com.ndfg.tracktuner">テストに参加する</a></li>
+      <li><b>3. Google Play からインストール</b><a class="btn" href="https://play.google.com/store/apps/details?id=com.ndfg.tracktuner">Google Play を開く</a></li>
+    </ol>
+  </section>
 </main>
 <script>
   // QR から来た人を、端末に合わせてストアへ送る。リンクの行き先はここだけで変えられる（ステッカーは刷り直さなくてよい）。
   var q = new URLSearchParams(location.search);
   var ct = (q.get('ct') || 'sticker').replace(/[^a-z0-9-]/gi, '').slice(0, 40);
   var IOS = 'https://apps.apple.com/jp/app/apple-store/id6767684904?pt=128881502&mt=8&ct=' + ct;
-  var ANDROID = ''; // Google Play で公開したら 'https://play.google.com/store/apps/details?id=com.ndfg.tracktuner&referrer=utm_source%3D' + ct を入れる
+  // Android はいまクローズドテスト：グループ参加→テスト参加→Play の3段を見せる（2026-10-27）。
+  // 一般公開したら ANDROID に 'https://play.google.com/store/apps/details?id=com.ndfg.tracktuner&referrer=utm_source%3D' + ct を入れると、3段の代わりに直接 Play へ送る。
+  var ANDROID = '';
   document.getElementById('ios').href = IOS;
   if (ANDROID) {
     var a = document.getElementById('android');
@@ -41,6 +60,7 @@
   var isAndroid = /Android/.test(ua);
   if (isIOS) { document.getElementById('ios').classList.add('main'); location.replace(IOS); }
   else if (isAndroid && ANDROID) { location.replace(ANDROID); }
+  else if (isAndroid) { var s = document.getElementById('android'); s.classList.add('main'); document.getElementById('ios').style.display = 'none'; }
 </script>
 </body>
 </html>
