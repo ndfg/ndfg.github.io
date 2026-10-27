@@ -32,23 +32,15 @@
   <h1><span class="t">Track</span>Tuner</h1>
   <p>トラックチューナー</p>
   <a class="btn" id="ios" href="#">iPhone（App Store）</a>
-  <section class="and" id="android">
-    <h2>Android（テスト版・無料）</h2>
-    <p class="note">上から順に3つ押してください。Google のアカウントで入ります。</p>
-    <ol>
-      <li><b>1. テスターのグループに参加</b><a class="btn" href="https://groups.google.com/g/tracktuner-android-testers">グループに参加する</a></li>
-      <li><b>2. テストに参加</b><a class="btn" href="https://play.google.com/apps/testing/com.ndfg.tracktuner">テストに参加する</a></li>
-      <li><b>3. Google Play からインストール</b><a class="btn" href="https://play.google.com/store/apps/details?id=com.ndfg.tracktuner">Google Play を開く</a></li>
-    </ol>
-  </section>
+  <span class="soon" id="android">Android（Google Play）まもなく公開</span>
 </main>
 <script>
   // QR から来た人を、端末に合わせてストアへ送る。リンクの行き先はここだけで変えられる（ステッカーは刷り直さなくてよい）。
   var q = new URLSearchParams(location.search);
   var ct = (q.get('ct') || 'sticker').replace(/[^a-z0-9-]/gi, '').slice(0, 40);
   var IOS = 'https://apps.apple.com/jp/app/apple-store/id6767684904?pt=128881502&mt=8&ct=' + ct;
-  // Android はいまクローズドテスト：グループ参加→テスト参加→Play の3段を見せる（2026-10-27）。
-  // 一般公開したら ANDROID に 'https://play.google.com/store/apps/details?id=com.ndfg.tracktuner&referrer=utm_source%3D' + ct を入れると、3段の代わりに直接 Play へ送る。
+  // Android は「まもなく公開」と出す（2026-10-27 開発者）。
+  // 一般公開したら ANDROID に 'https://play.google.com/store/apps/details?id=com.ndfg.tracktuner&referrer=utm_source%3D' + ct を入れると、Android の人を直接 Play へ送る（名刺は刷り直さなくてよい）。
   var ANDROID = '';
   document.getElementById('ios').href = IOS;
   if (ANDROID) {
@@ -60,7 +52,6 @@
   var isAndroid = /Android/.test(ua);
   if (isIOS) { document.getElementById('ios').classList.add('main'); location.replace(IOS); }
   else if (isAndroid && ANDROID) { location.replace(ANDROID); }
-  else if (isAndroid) { var s = document.getElementById('android'); s.classList.add('main'); document.getElementById('ios').style.display = 'none'; }
 </script>
 </body>
 </html>
